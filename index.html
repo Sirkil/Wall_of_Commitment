@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wall of Commitment</title>
+  <meta name="description" content="A live wall of community commitments and submissions.">
+  
+  <!-- Modern Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Instant Responsive Scaling Script (Executes before first paint) -->
+  <script>
+    (function () {
+      function applyScale() {
+        var vw = window.innerWidth;
+        var vh = window.innerHeight;
+        var scale = vh > vw 
+          ? Math.max(0.48, Math.min(Math.min(vw / 1080, vh / 1920), 3.5))
+          : Math.max(0.50, Math.min(Math.min(vw / 1920, vh / 1080), 4.0));
+        document.documentElement.style.setProperty('--ui-scale', scale.toFixed(4));
+      }
+      applyScale();
+    })();
+  </script>
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Ambient background -->
+  <div class="ambient-background" id="ambientBg">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+    <div class="ambient-mesh"></div>
+  </div>
+
+  <!-- Glowing Rain Streaks Canvas -->
+  <canvas class="glow-rain-canvas" id="glowRainCanvas"></canvas>
+
+  <!-- Raining / Floating Names Layer -->
+  <div class="raining-names-container" id="rainingContainer" aria-live="polite"></div>
+
+  <!-- View Toggle Button (Rain <-> Grid) -->
+  <button class="view-toggle-btn" id="viewToggleBtn" aria-label="Toggle between Rain View and Grid View" title="Switch View">
+    <span class="btn-icon" id="toggleIcon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+        <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+        <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+        <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+      </svg>
+    </span>
+    <span class="btn-text" id="toggleText">Grid View</span>
+    <span class="badge-count" id="namesCountBadge">0</span>
+  </button>
+
+  <!-- Center Stage -->
+  <main class="center-stage" id="centerStage" role="main">
+    <!-- Claim View -->
+    <div class="stage-view claim-view is-active" id="claimView">
+      <h1 class="claim-text" id="claimText">I Commit</h1>
+    </div>
+
+    <!-- Spotlight Name View -->
+    <div class="stage-view name-view" id="nameView">
+      <div class="spotlight-content">
+        <h2 class="spotlight-name" id="spotlightName"></h2>
+        <p class="spotlight-sub-claim" id="spotlightSubClaim">I Commit</p>
+      </div>
+    </div>
+  </main>
+
+  <!-- Grid View Overlay for all submitted names -->
+  <section class="grid-view-section" id="gridViewSection" aria-hidden="true">
+    <div class="grid-view-inner">
+      <div class="grid-view-header">
+        <h2 class="grid-main-heading">I Commit</h2>
+        <p class="grid-sub-heading">Live Community Wall</p>
+      </div>
+
+      <div class="grid-names-container" id="gridNamesContainer">
+        <!-- Names are scattered through this area when submissions arrive. -->
+      </div>
+
+      <div class="grid-empty-message" id="gridEmptyMessage">
+        <div class="empty-icon-wrap">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+        </div>
+        <p class="empty-prompt">No names added yet.</p>
+        <p class="empty-sub">Scan the QR code below to add your name to the wall!</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- One fixed QR code remains visible through every view and name transition. -->
+  <section class="qr-section" id="qrSection">
+    <div class="qr-code-wrapper">
+      <img src="assets/QrCode.png" alt="Scan QR Code" class="qr-code-img" id="qrCodeImg">
+    </div>
+  </section>
+
+  <script src="app.js"></script>
+</body>
+</html>
